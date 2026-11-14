@@ -14,7 +14,7 @@ from config import (
     get_settings,
 )
 from src.pipeline import AnalysisError, AnalysisInput, run_analysis
-from src.ui import theme
+from src.ui import quickstart_panel, theme
 from src.ui.results import disclaimer, download_button, manufacturer_block, requirements_table
 from src.ui.results import results_header, parser_notes, validation_issues
 
@@ -54,14 +54,24 @@ if "analysis_error" not in st.session_state:
     st.session_state.analysis_error = None
 
 # ---------------------------------------------------------------------------
+# Quick start (also available without an API key)
+# ---------------------------------------------------------------------------
+
+result = st.session_state.analysis_result
+if result is None:
+    st.markdown('<div class="sm-section"></div>', unsafe_allow_html=True)
+    quickstart_panel.panel(inline_results=False, show_scenarios=False)
+    st.markdown('<div class="sm-section"></div>', unsafe_allow_html=True)
+
+# ---------------------------------------------------------------------------
 # Configuration guard
 # ---------------------------------------------------------------------------
 
-if not settings.api_configured:
+if result is None and not settings.api_configured:
     theme.callout(
         "<strong>No API key configured.</strong> Add <code>DEPLOY_API_KEY</code> to the "
-        "<code>.env</code> file in the project root, then reload this page. The sample "
-        "analysis works without a key.",
+        "<code>.env</code> file in the project root, then reload this page. The Quick "
+        "Start demo and the sample analysis work without a key.",
         tone="bad",
     )
     with st.expander("How to configure the Deploy API key", expanded=True):
@@ -82,11 +92,20 @@ if not settings.api_configured:
 
 result = st.session_state.analysis_result
 if result is not None:
-    theme.callout(
-        f"<strong>Analysis complete.</strong> {len(result.manufacturers)} manufacturer "
-        f"document(s) compared against <code>{result.spec.document_name}</code>.",
-        tone="info",
-    )
+    if result.demo:
+        theme.callout(
+            "<strong>Quick Start demo loaded.</strong> This is the precomputed "
+            "comparison of one synthetic specification and two synthetic manufacturer "
+            "offers. It was produced by the real pipeline and needed no API call. "
+            "Use <em>Start another analysis</em> to upload your own PDFs.",
+            tone="warn",
+        )
+    else:
+        theme.callout(
+            f"<strong>Analysis complete.</strong> {len(result.manufacturers)} manufacturer "
+            f"document(s) compared against <code>{result.spec.document_name}</code>.",
+            tone="info",
+        )
     top_left, top_right, _ = st.columns([0.32, 0.3, 0.38], gap="small")
     with top_left:
         download_button(result, key="download-live-report")

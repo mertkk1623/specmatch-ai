@@ -15,6 +15,7 @@ criterion-by-criterion comparison with page-level evidence.
 
 - [The problem](#the-problem)
 - [Screenshots](#screenshots)
+- [Quick start](#quick-start)
 - [What it does](#what-it-does)
 - [How the comparison works](#how-the-comparison-works)
 - [Workflow](#workflow)
@@ -56,7 +57,8 @@ All screenshots below are captured from the running application.
 ![Landing page](docs/screenshots/01-landing-page.png)
 
 The landing page explains the problem, the three-step workflow, the V1 comparison scope,
-and links to the sample documents. The roadmap is visible but marked as planned.
+and opens with a Quick start panel: a one-click demo comparison, blank templates, and the
+sample dataset. The roadmap is visible but marked as planned.
 
 ### 2. Sample analysis
 
@@ -89,6 +91,36 @@ grade, galvanizing, and the standard do not.
 The downloadable report is a single self-contained HTML file with inline CSS, no scripts,
 and a print-friendly layout. It repeats the summary, both comparisons, and the extracted
 specification requirements.
+
+## Quick start
+
+The landing page has a **Quick start & demo data** panel above the upload area. It needs
+no API key and no files of your own.
+
+| Button | What it does |
+|---|---|
+| **🚀 Load the demo comparison** | Opens a finished comparison of one specification and two manufacturer offers. The result is precomputed, so there is no upload, no API call, and no waiting. |
+| **📥 Blank templates** | Downloads a ZIP with a blank specification PDF, a blank manufacturer PDF, and the field guide. |
+| **📊 Sample dataset** | Downloads a ZIP with the three sample PDFs, ready to upload on the **New analysis** page. |
+
+**A note on the word "template".** SpecMatch AI does not read CSV or Excel. It reads PDFs
+and extracts five technical fields with a language model, so a column template would not
+describe the input. The blank templates are therefore PDF datasheets that carry exactly the
+five labels the extractor looks for. `field_guide.csv` is included as documentation of those
+fields — labels, accepted units, and the rule behind each status — not as an input file.
+
+**The four demonstration scenarios** live in two manufacturer documents, not four:
+
+| Scenario | Where it appears |
+|---|---|
+| Exact match | Dimensions: `60 × 60 mm` on both sides. |
+| Semantic match | `S235JRH` vs `S 235 JRH`, and `EN 10219` vs `EN 10219-1`. |
+| Over-spec | `3.2 mm minimum` against a `3.0 mm minimum` requirement; `620 g/m²` coating against `505 g/m²`. |
+| Critical deviation | Karadeniz Boru: `2.5 mm nominal` against a `3.0 mm minimum`, grade `S275J0H`, and pre-galvanized strip `EN 10346 Z275` where hot-dip `EN ISO 1461` is required. |
+
+The demo opens with **6 compliant, 3 non-compliant, 1 unverified** results across the two
+offers. There is no numeric matching score in V1 — each criterion receives a status, and
+missing information stays unverified rather than being assumed.
 
 ## What it does
 
@@ -207,24 +239,38 @@ specmatch-ai/
 │   ├── pipeline.py            # orchestration and error handling
 │   ├── report.py              # self-contained HTML export
 │   ├── demo.py                # precomputed demo loader
+│   ├── quickstart.py          # quickstart result loader, template and dataset archives
 │   └── ui/
 │       ├── theme.py           # CSS, nav, badges, stat strip, markup helper
+│       ├── quickstart_panel.py # landing-page Quick start panel and inline demo
 │       └── results.py         # comparison table, evidence, download button
 ├── pages/
 │   ├── sample_demo.py         # precomputed demo, no API call
 │   └── new_analysis.py        # upload, run, states, results
-├── tests/                     # 103 tests
+├── tests/                     # 112 tests
 ├── scripts/
 │   ├── build_demo_pdfs.py     # regenerates the three synthetic PDFs
 │   ├── build_demo_analysis.py # regenerates the precomputed demo via the real pipeline
+│   ├── build_quickstart_docs.py     # regenerates the Quick Start scenario PDFs
+│   ├── build_quickstart_analysis.py # regenerates the precomputed Quick Start result
+│   ├── build_templates.py     # regenerates the blank templates and field guide
 │   └── capture_screenshots.py # regenerates docs/screenshots from the running app
 ├── sample_docs/
 │   ├── demo_specification.pdf
 │   ├── demo_manufacturer_a.pdf
 │   ├── demo_manufacturer_b.pdf
+│   ├── quickstart/
+│   │   ├── quickstart_specification.pdf
+│   │   ├── quickstart_manufacturer_a.pdf
+│   │   └── quickstart_manufacturer_b.pdf
+│   ├── templates/
+│   │   ├── template_specification.pdf
+│   │   ├── template_manufacturer.pdf
+│   │   └── field_guide.csv
 │   └── precomputed/
 │       ├── demo_analysis.json
-│       └── demo_report.html
+│       ├── demo_report.html
+│       └── quickstart_analysis.json
 └── docs/screenshots/
 ```
 
@@ -330,6 +376,13 @@ Open **Sample analysis** in the top navigation. It shows the stored result for t
 synthetic demo PDFs, including the non-compliant case with its evidence. No API call is
 made. The three demo PDFs themselves are downloadable from the landing page.
 
+**Or open the Quick start demo**
+
+On the landing page, press **🚀 Load the demo comparison** in the Quick start panel. The
+four-scenario comparison opens inline, and **Close demo results** hides it again. On the
+**New analysis** page the same button loads the result into the page's normal result view;
+**Start another analysis** clears it and brings back the upload form.
+
 **Run a real comparison**
 
 1. Open **New analysis**.
@@ -348,6 +401,9 @@ Limits: 25 MB per file, 60 pages per specification, 80 pages per catalogue.
 |---|---|
 | `python scripts/build_demo_pdfs.py` | Rebuild the three synthetic demo PDFs. Every page carries a visible "SYNTHETIC DEMO DOCUMENT" banner. |
 | `python scripts/build_demo_analysis.py` | Run the real pipeline on the demo PDFs and rewrite `sample_docs/precomputed/`. Makes API calls. |
+| `python scripts/build_quickstart_docs.py` | Rebuild the three Quick Start scenario PDFs (one specification, two manufacturer offers). |
+| `python scripts/build_quickstart_analysis.py` | Run the real pipeline on the Quick Start PDFs and rewrite `sample_docs/precomputed/quickstart_analysis.json`. Makes API calls. |
+| `python scripts/build_templates.py` | Rebuild the blank PDF templates and `field_guide.csv`. |
 | `python scripts/capture_screenshots.py` | Capture the five README screenshots from the running app on port 8531 using Playwright. |
 | `python scripts/e2e_check.py` | End-to-end check: upload all three PDFs, run a real analysis, verify results, download the report. Makes API calls. |
 | `python scripts/check_docs.py` | Verify README links, screenshot paths, in-page anchors, and that no API key or local absolute path appears in the docs. |
@@ -366,7 +422,7 @@ streamlit run app.py --server.port 8531 --server.headless true
 pytest tests -q
 ```
 
-103 tests, currently all passing. They cover:
+112 tests, currently all passing. They cover:
 
 - unit normalization and conversion, including unsupported units
 - every comparison rule and its edge cases (exact match, clear mismatch, missing data,
@@ -376,6 +432,8 @@ pytest tests -q
 - pipeline behaviour with the AI layer stubbed: no network, API failure, explanation
   failure, more than two manufacturers, missing API key
 - report generation
+- the Quick Start data layer: the four advertised scenarios must match the precomputed
+  result, and both ZIP archives must contain the expected files
 
 The comparison engine is tested without any API key and without network access.
 

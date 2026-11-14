@@ -1,0 +1,6 @@
+criterion_key,spec_label,offer_label,value_type,accepted_units,example_value,status_rule
+dimensions,Section profile,Outside dimensions / Dimensions,number x number,"mm, cm, m, in",60 x 60 mm,Both width and height must be present on both sides. Equal within 0.1 mm -> compliant; a clear difference -> non-compliant.
+wall_thickness,Wall thickness,Wall thickness,number + kind (nominal/minimum/maximum),"mm, cm, m, in",3.0 mm minimum,nominal: equal within 0.1 mm. minimum: offer >= minimum. maximum: offer <= maximum. Missing value -> unverified.
+material_grade,Steel grade,Steel grade / Grade,text designation,n/a,S235JRH,"Normalized equality (case, spaces and hyphens ignored). Different grade -> non-compliant. 'Or equivalent' in the spec -> unverified."
+galvanizing,Galvanizing,Surface finish / Coating,process + standard + coating mass or thickness,"g/m2, mg/cm2, um, mm","Hot-dip galvanized to EN ISO 1461, 505 g/m2","Process, standard and coating mass are checked separately. Conflict -> non-compliant. Missing or different standard -> unverified."
+standard,Applicable standard,Manufacturing standard / Standard,text designation,n/a,EN 10219,"Normalized containment, so EN 10219 matches EN 10219-1. Clearly different product standard -> non-compliant."

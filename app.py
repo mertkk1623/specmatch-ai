@@ -9,7 +9,7 @@ import streamlit as st
 
 from config import get_settings
 from src.demo import DEMO_DOCUMENTS, demo_available, demo_document_path
-from src.ui import theme
+from src.ui import quickstart_panel, theme
 
 st.set_page_config(
     page_title="SpecMatch AI — Technical specification comparison",
@@ -69,6 +69,13 @@ with right:
         ),
         unsafe_allow_html=True,
     )
+
+# ---------------------------------------------------------------------------
+# Quick start & demo data
+# ---------------------------------------------------------------------------
+
+st.markdown('<div class="sm-section"></div>', unsafe_allow_html=True)
+quickstart_panel.panel(inline_results=True)
 
 # ---------------------------------------------------------------------------
 # Workflow

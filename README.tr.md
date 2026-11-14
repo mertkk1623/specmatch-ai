@@ -15,6 +15,7 @@ düzeyinde kanıta dayalı bir karşılaştırma elde edin.
 
 - [Sorun](#sorun)
 - [Ekran görüntüleri](#ekran-görüntüleri)
+- [Hızlı başlangıç](#hızlı-başlangıç)
 - [Ne yapar](#ne-yapar)
 - [Karşılaştırma nasıl çalışır](#karşılaştırma-nasıl-çalışır)
 - [İş akışı](#iş-akışı)
@@ -55,8 +56,9 @@ Aşağıdaki tüm ekran görüntüleri çalışan uygulamadan alınmıştır.
 
 ![Açılış sayfası](docs/screenshots/01-landing-page.png)
 
-Açılış sayfası sorunu, üç adımlı iş akışını ve V1 karşılaştırma kapsamını anlatır; örnek
-dokümanlara bağlantı verir. Yol haritası görünür ama planlanan olarak işaretlenmiştir.
+Açılış sayfası sorunu, üç adımlı iş akışını ve V1 karşılaştırma kapsamını anlatır; hızlı
+başlangıç paneliyle açılır: tek tıkla demo karşılaştırma, boş şablonlar ve örnek veri seti.
+Yol haritası görünür ama planlanan olarak işaretlenmiştir.
 
 ### 2. Örnek analiz
 
@@ -90,6 +92,36 @@ eşleşmiyor.
 İndirilebilir rapor; satır içi CSS kullanan, betik içermeyen, yazdırmaya uygun tek bir
 HTML dosyasıdır. Özeti, iki karşılaştırmayı ve şartnameden çıkarılan gereksinimleri
 yansıtır.
+
+## Hızlı başlangıç
+
+Açılış sayfasında, yükleme alanının hemen üstünde **Quick start & demo data** paneli
+bulunur. API anahtarı ve kendi dosyalarınız gerekmez.
+
+| Düğme | Ne yapar |
+|---|---|
+| **🚀 Load the demo comparison** | Bir şartname ile iki üretici teklifinin tamamlanmış karşılaştırmasını açar. Sonuç önceden hesaplanmıştır; yükleme, API çağrısı ve bekleme yoktur. |
+| **📥 Blank templates** | Boş şartname PDF'i, boş üretici PDF'i ve alan kılavuzunu içeren bir ZIP indirir. |
+| **📊 Sample dataset** | **New analysis** sayfasında yüklenmeye hazır üç örnek PDF'i içeren bir ZIP indirir. |
+
+**"Şablon" kelimesi hakkında bir not.** SpecMatch AI CSV veya Excel okumaz. PDF okur ve
+beş teknik alanı bir dil modeliyle çıkarır; bu nedenle sütun şablonu girdiyi tanımlamaz.
+Boş şablonlar, çıkarıcının aradığı beş etiketi taşıyan boş PDF veri sayfalarıdır.
+`field_guide.csv` bu alanların belgeleridir — etiketler, kabul edilen birimler ve her
+durumun arkasındaki kural — girdi dosyası değildir.
+
+**Dört gösterim senaryosu** dört ayrı dosyada değil, iki üretici dokümanında yer alır:
+
+| Senaryo | Nerede görünür |
+|---|---|
+| Tam uyum | Ölçüler: her iki tarafta `60 × 60 mm`. |
+| Anlamsal uyum | `S235JRH` ile `S 235 JRH`, `EN 10219` ile `EN 10219-1`. |
+| Üst özellik | `3.0 mm minimum` gereksinimine karşı `3.2 mm minimum`; `505 g/m²` kaplamaya karşı `620 g/m²`. |
+| Kritik sapma | Karadeniz Boru: `3.0 mm minimum` yerine `2.5 mm nominal`, `S275J0H` kalitesi ve sıcak daldırma `EN ISO 1461` yerine ön galvanizli şerit `EN 10346 Z275`. |
+
+Demo, iki teklif için **6 uyumlu, 3 uyumsuz, 1 doğrulanamaz** sonuçla açılır. V1'de sayısal
+eşleştirme skoru yoktur — her kriter bir durum alır ve eksik bilgi varsayılmak yerine
+doğrulanamaz olarak kalır.
 
 ## Ne yapar
 
@@ -207,24 +239,38 @@ specmatch-ai/
 │   ├── pipeline.py            # orkestrasyon ve hata yönetimi
 │   ├── report.py              # kendi kendine yeterli HTML dışa aktarımı
 │   ├── demo.py                # önceden hesaplanmış demo yükleyici
+│   ├── quickstart.py          # hızlı başlangıç yükleyici, şablon ve veri seti arşivleri
 │   └── ui/
 │       ├── theme.py           # CSS, gezinme, rozetler, istatistik şeridi, markup yardımcısı
+│       ├── quickstart_panel.py # açılış sayfası hızlı başlangıç paneli ve satır içi demo
 │       └── results.py         # karşılaştırma tablosu, kanıt, indirme düğmesi
 ├── pages/
 │   ├── sample_demo.py         # önceden hesaplanmış demo, API çağrısı yok
 │   └── new_analysis.py        # yükleme, çalıştırma, durumlar, sonuçlar
-├── tests/                     # 103 test
+├── tests/                     # 112 test
 ├── scripts/
 │   ├── build_demo_pdfs.py     # üç sentetik PDF'i yeniden üretir
 │   ├── build_demo_analysis.py # önceden hesaplanmış demoyu gerçek iş akışıyla yeniler
+│   ├── build_quickstart_docs.py     # Quick Start senaryo PDF'lerini yeniden üretir
+│   ├── build_quickstart_analysis.py # önceden hesaplanmış Quick Start sonucunu yeniler
+│   ├── build_templates.py     # boş şablonları ve alan kılavuzunu yeniler
 │   └── capture_screenshots.py # docs/screenshots'ı çalışan uygulamadan yeniler
 ├── sample_docs/
 │   ├── demo_specification.pdf
 │   ├── demo_manufacturer_a.pdf
 │   ├── demo_manufacturer_b.pdf
+│   ├── quickstart/
+│   │   ├── quickstart_specification.pdf
+│   │   ├── quickstart_manufacturer_a.pdf
+│   │   └── quickstart_manufacturer_b.pdf
+│   ├── templates/
+│   │   ├── template_specification.pdf
+│   │   ├── template_manufacturer.pdf
+│   │   └── field_guide.csv
 │   └── precomputed/
 │       ├── demo_analysis.json
-│       └── demo_report.html
+│       ├── demo_report.html
+│       └── quickstart_analysis.json
 └── docs/screenshots/
 ```
 
@@ -330,6 +376,13 @@ Streamlit yerel bir adres yazar, genellikle `http://localhost:8501`.
 uygun olmayan örneği ve kanıtlarını gösterir. Hiçbir API çağrısı yapılmaz. Üç demo PDF'in
 kendisi açılış sayfasından indirilebilir.
 
+**Veya hızlı başlangıç demosunu açın**
+
+Açılış sayfasındaki Quick start panelinde **🚀 Load the demo comparison** düğmesine basın.
+Dört senaryolu karşılaştırma sayfanın içinde açılır; **Close demo results** düğmesi tekrar
+gizler. **New analysis** sayfasında aynı düğme sonucu sayfanın normal sonuç görünümüne
+yükler; **Start another analysis** temizler ve yükleme formunu geri getirir.
+
 **Gerçek bir karşılaştırma çalıştırın**
 
 1. **New analysis** sayfasını açın.
@@ -348,6 +401,9 @@ Limitler: dosya başına 25 MB, şartname için 60 sayfa, katalog için 80 sayfa
 |---|---|
 | `python scripts/build_demo_pdfs.py` | Üç sentetik demo PDF'i yeniden üretir. Her sayfada görünür "SYNTHETIC DEMO DOCUMENT" şeridi bulunur. |
 | `python scripts/build_demo_analysis.py` | Demo PDF'ler üzerinde gerçek iş akışını çalıştırır ve `sample_docs/precomputed/` içeriğini yeniler. API çağrısı yapar. |
+| `python scripts/build_quickstart_docs.py` | Üç Quick Start senaryo PDF'ini (bir şartname, iki üretici teklifi) yeniden üretir. |
+| `python scripts/build_quickstart_analysis.py` | Quick Start PDF'leri üzerinde gerçek iş akışını çalıştırır ve `sample_docs/precomputed/quickstart_analysis.json` dosyasını yeniler. API çağrısı yapar. |
+| `python scripts/build_templates.py` | Boş PDF şablonlarını ve `field_guide.csv` dosyasını yeniden üretir. |
 | `python scripts/capture_screenshots.py` | 8531 portunda çalışan uygulamadan Playwright ile beş README ekran görüntüsünü alır. |
 | `python scripts/e2e_check.py` | Uçtan uca kontrol: üç PDF'i yükler, gerçek analiz çalıştırır, sonuçları doğrular, raporu indirir. API çağrısı yapar. |
 | `python scripts/check_docs.py` | README bağlantılarını, ekran görüntüsü yollarını, sayfa içi bağlantıları ve dokümanlarda API anahtarı veya yerel mutlak yol bulunmadığını doğrular. |
@@ -366,7 +422,7 @@ streamlit run app.py --server.port 8531 --server.headless true
 pytest tests -q
 ```
 
-103 test, tamamı geçiyor. Kapsam:
+112 test, tamamı geçiyor. Kapsam:
 
 - birim normalleştirme ve dönüştürme, desteklenmeyen birimler dahil
 - her karşılaştırma kuralı ve uç durumları (tam eşleşme, açık uyuşmazlık, eksik veri,
@@ -376,6 +432,8 @@ pytest tests -q
 - yapay zekâ katmanı taklit edilerek iş akışı davranışı: ağ yok, API hatası, açıklama
   hatası, ikiden fazla üretici, eksik API anahtarı
 - rapor üretimi
+- hızlı başlangıç veri katmanı: duyurulan dört senaryonun önceden hesaplanmış sonuçla
+  eşleşmesi ve iki ZIP arşivinin beklenen dosyaları içermesi
 
 Karşılaştırma motoru hiçbir API anahtarı ve ağ erişimi olmadan test edilir.
 

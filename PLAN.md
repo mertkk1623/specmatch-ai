@@ -18,6 +18,7 @@ results, downloadable report, precomputed sample demo. No auth, no DB, no Docker
 | AI explanations | Generated after deterministic comparison, statuses supplied to the model read-only. Deterministic fallback text on API failure. |
 | Report | Self-contained HTML export (`src/report.py`) with print CSS. |
 | Demo data | Real pipeline output generated once via the API and stored in `sample_docs/precomputed/`. Viewing the demo makes no API call. |
+| Quick start | A second precomputed run (four scenarios: exact, semantic, over-spec, critical deviation) opens from the landing page in one click, plus blank PDF templates and the sample dataset as ZIP downloads. Still no API call and no upload. |
 | Parser | Docling primary (`src/document_parser.py`), pypdf fallback with an explicit parser label in the UI when Docling is unavailable/fails. |
 
 ## Phases
@@ -32,6 +33,7 @@ results, downloadable report, precomputed sample demo. No auth, no DB, no Docker
 8. **Precomputed demo** — run the real pipeline on the demo PDFs, store JSON + metadata, verify demo renders without API.
 9. **Verification** — full pytest run, manual workflow test, error-state checks.
 10. **Documentation & screenshots** — real Playwright screenshots into `docs/screenshots/`, English + Turkish README with language switch, scope/limitations/roadmap, no fabricated completion (no live deployment claim).
+11. **Quick start & demo data** — four-scenario dataset, blank PDF templates, field guide, precomputed result, landing-page panel and session-state integration; demo reproducible without an API key.
 
 ## Initial file tree
 

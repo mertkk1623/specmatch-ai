@@ -1,0 +1,453 @@
+{
+  "analysis_id": "7bccfe15dd76",
+  "created_at": "2026-11-14T09:24:55.436991Z",
+  "spec": {
+    "document_name": "quickstart_specification.pdf",
+    "document_meta": {
+      "filename": "quickstart_specification.pdf",
+      "kind": "specification",
+      "page_count": 1,
+      "parser": "Docling",
+      "tables_found": 1,
+      "char_count": 1144,
+      "warnings": []
+    },
+    "requirements": {
+      "document_kind": "specification",
+      "product_family_statement": "Galvanized square hollow sections",
+      "dimensions": {
+        "width": {
+          "value": 60.0,
+          "unit": "mm",
+          "page": 1,
+          "excerpt": "Section profile | Square hollow section, 60 x 60 mm"
+        },
+        "height": {
+          "value": 60.0,
+          "unit": "mm",
+          "page": 1,
+          "excerpt": "Section profile | Square hollow section, 60 x 60 mm"
+        },
+        "raw_text": "60 x 60 mm",
+        "page": 1,
+        "excerpt": "Section profile | Square hollow section, 60 x 60 mm"
+      },
+      "wall_thickness": {
+        "value": 3.0,
+        "unit": "mm",
+        "kind": "minimum",
+        "page": 1,
+        "excerpt": "Wall thickness | 3.0 mm minimum"
+      },
+      "material_grade": {
+        "grade": "S235JRH",
+        "equivalence_allowed": false,
+        "page": 1,
+        "excerpt": "Steel grade | S235JRH"
+      },
+      "galvanizing": {
+        "process": "hot_dip",
+        "standard": "EN ISO 1461",
+        "coating_mass_value": 505.0,
+        "coating_mass_unit": "g/m2",
+        "coating_thickness_value": null,
+        "coating_thickness_unit": null,
+        "raw_text": "Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2",
+        "page": 1,
+        "excerpt": "Galvanizing | Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2"
+      },
+      "standard": {
+        "designation": "EN 10219",
+        "page": 1,
+        "excerpt": "Applicable standard | EN 10219"
+      },
+      "notes": [
+        "Wall thickness is stated as 3.0 mm minimum, not nominal.",
+        "Substitution of the steel grade requires written approval from the Structural Engineer.",
+        "EN ISO 1461 is cited as the galvanizing coating standard; EN 10219 is the applicable product standard."
+      ]
+    },
+    "study_description": "Galvanized square hollow sections",
+    "evidence": {
+      "dimensions": {
+        "page": 1,
+        "excerpt": "Section profile | Square hollow section, 60 x 60 mm"
+      },
+      "wall_thickness": {
+        "page": 1,
+        "excerpt": "Wall thickness | 3.0 mm minimum"
+      },
+      "material_grade": {
+        "page": 1,
+        "excerpt": "Steel grade | S235JRH"
+      },
+      "galvanizing": {
+        "page": 1,
+        "excerpt": "Galvanizing | Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2"
+      },
+      "standard": {
+        "page": 1,
+        "excerpt": "Applicable standard | EN 10219"
+      }
+    },
+    "validation_issues": []
+  },
+  "manufacturers": [
+    {
+      "name": "Marmara Çelik",
+      "document_name": "quickstart_manufacturer_a.pdf",
+      "document_meta": {
+        "filename": "quickstart_manufacturer_a.pdf",
+        "kind": "manufacturer",
+        "page_count": 1,
+        "parser": "Docling",
+        "tables_found": 1,
+        "char_count": 1067,
+        "warnings": []
+      },
+      "criteria": [
+        {
+          "criterion": "dimensions",
+          "status": "compliant",
+          "headline": "Offered section matches the specified profile",
+          "spec_display": "60 × 60 mm",
+          "offer_display": "60 × 60 mm",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Section profile | Square hollow section, 60 x 60 mm"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Outside dimensions | 60 x 60 mm"
+          },
+          "checks": [
+            {
+              "label": "Width",
+              "outcome": "pass",
+              "spec_text": "60 mm",
+              "offer_text": "60 mm",
+              "note": null
+            },
+            {
+              "label": "Height",
+              "outcome": "pass",
+              "spec_text": "60 mm",
+              "offer_text": "60 mm",
+              "note": null
+            }
+          ],
+          "rule_explanation": "Width and height match the specification within the 0.1 mm rounding tolerance used in V1.",
+          "ai_explanation": "Width and height are both 60 mm, matching the 60 × 60 mm specification within the 0.1 mm rounding tolerance used in V1.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "wall_thickness",
+          "status": "compliant",
+          "headline": "Offered wall thickness meets the requirement",
+          "spec_display": "3 mm (minimum)",
+          "offer_display": "3.2 mm (minimum)",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Wall thickness | 3.0 mm minimum"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Wall thickness | 3.2 mm minimum"
+          },
+          "checks": [
+            {
+              "label": "Wall thickness",
+              "outcome": "pass",
+              "spec_text": "3 mm (minimum)",
+              "offer_text": "3.2 mm (minimum)",
+              "note": null
+            }
+          ],
+          "rule_explanation": "The offered wall thickness meets or exceeds the required minimum.",
+          "ai_explanation": "The offered minimum wall thickness of 3.2 mm meets or exceeds the required 3 mm minimum.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "material_grade",
+          "status": "compliant",
+          "headline": "Material grade matches the specification",
+          "spec_display": "S235JRH",
+          "offer_display": "S 235 JRH",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Steel grade | S235JRH"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Steel grade | S 235 JRH"
+          },
+          "checks": [
+            {
+              "label": "Grade designation",
+              "outcome": "pass",
+              "spec_text": "S235JRH",
+              "offer_text": "S235JRH",
+              "note": null
+            }
+          ],
+          "rule_explanation": "Both documents state grade S235JRH (spacing and punctuation ignored when comparing designations).",
+          "ai_explanation": "Both documents state grade S235JRH, with spacing and punctuation ignored when comparing designations.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "galvanizing",
+          "status": "compliant",
+          "headline": "Offered coating meets the stated requirement",
+          "spec_display": "Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2",
+          "offer_display": "Hot-dip galvanised after fabrication, EN ISO 1461, coating mass 620 g/m2",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Galvanizing | Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Surface finish | Hot-dip galvanised after fabrication, EN ISO 1461, coating mass 620 g/m2"
+          },
+          "checks": [
+            {
+              "label": "Coating process",
+              "outcome": "pass",
+              "spec_text": "hot-dip galvanized",
+              "offer_text": "hot-dip galvanized",
+              "note": null
+            },
+            {
+              "label": "Coating standard",
+              "outcome": "pass",
+              "spec_text": "EN ISO 1461",
+              "offer_text": "EN ISO 1461",
+              "note": null
+            },
+            {
+              "label": "Coating mass",
+              "outcome": "pass",
+              "spec_text": "≥ 505 g/m²",
+              "offer_text": "620 g/m²",
+              "note": null
+            }
+          ],
+          "rule_explanation": "All specified coating attributes match the catalogue evidence.",
+          "ai_explanation": "The catalogue confirms hot-dip galvanizing to EN ISO 1461 with a coating mass of 620 g/m2, which meets the specified minimum of 505 g/m2.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "standard",
+          "status": "compliant",
+          "headline": "Catalogue references the required standard",
+          "spec_display": "EN 10219",
+          "offer_display": "EN 10219-1",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Applicable standard | EN 10219"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Manufacturing standard | EN 10219-1"
+          },
+          "checks": [
+            {
+              "label": "Standard designation",
+              "outcome": "pass",
+              "spec_text": "EN 10219",
+              "offer_text": "EN 10219-1",
+              "note": "Part-level reference is consistent."
+            }
+          ],
+          "rule_explanation": "The catalogue references the same standard family and number as the specification.",
+          "ai_explanation": "The catalogue references EN 10219-1, which is consistent with the specified EN 10219 standard family and number.",
+          "explanation_source": "ai"
+        }
+      ],
+      "counts": {
+        "compliant": 5,
+        "non_compliant": 0,
+        "unverified": 0,
+        "not_specified": 0
+      },
+      "warnings": []
+    },
+    {
+      "name": "Karadeniz Boru",
+      "document_name": "quickstart_manufacturer_b.pdf",
+      "document_meta": {
+        "filename": "quickstart_manufacturer_b.pdf",
+        "kind": "manufacturer",
+        "page_count": 1,
+        "parser": "Docling",
+        "tables_found": 1,
+        "char_count": 717,
+        "warnings": []
+      },
+      "criteria": [
+        {
+          "criterion": "dimensions",
+          "status": "compliant",
+          "headline": "Offered section matches the specified profile",
+          "spec_display": "60 × 60 mm",
+          "offer_display": "60 × 60 mm",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Section profile | Square hollow section, 60 x 60 mm"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Outside dimensions | 60 x 60 mm"
+          },
+          "checks": [
+            {
+              "label": "Width",
+              "outcome": "pass",
+              "spec_text": "60 mm",
+              "offer_text": "60 mm",
+              "note": null
+            },
+            {
+              "label": "Height",
+              "outcome": "pass",
+              "spec_text": "60 mm",
+              "offer_text": "60 mm",
+              "note": null
+            }
+          ],
+          "rule_explanation": "Width and height match the specification within the 0.1 mm rounding tolerance used in V1.",
+          "ai_explanation": "Width and height are both 60 mm, matching the 60 × 60 mm specification within the 0.1 mm rounding tolerance used in V1.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "wall_thickness",
+          "status": "non_compliant",
+          "headline": "Offered wall thickness conflicts with the requirement",
+          "spec_display": "3 mm (minimum)",
+          "offer_display": "2.5 mm (nominal)",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Wall thickness | 3.0 mm minimum"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Wall thickness | 2.5 mm nominal"
+          },
+          "checks": [
+            {
+              "label": "Wall thickness",
+              "outcome": "fail",
+              "spec_text": "3 mm (minimum)",
+              "offer_text": "2.5 mm (nominal)",
+              "note": null
+            }
+          ],
+          "rule_explanation": "The offered wall thickness is below the required minimum.",
+          "ai_explanation": "The offered nominal wall thickness of 2.5 mm is below the required 3 mm minimum.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "material_grade",
+          "status": "non_compliant",
+          "headline": "Offered material grade differs from the specification",
+          "spec_display": "S235JRH",
+          "offer_display": "S275J0H",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Steel grade | S235JRH"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Steel grade | S275J0H"
+          },
+          "checks": [
+            {
+              "label": "Grade designation",
+              "outcome": "fail",
+              "spec_text": "S235JRH",
+              "offer_text": "S275J0H",
+              "note": null
+            }
+          ],
+          "rule_explanation": "The specification requires grade S235JRH and the catalogue offers S275J0H, which is a different designation.",
+          "ai_explanation": "The catalogue offers grade S275J0H, which is a different designation from the required S235JRH.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "galvanizing",
+          "status": "non_compliant",
+          "headline": "Offered coating conflicts with the requirement",
+          "spec_display": "Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2",
+          "offer_display": "pre-galvanized (zinc-coated strip) · EN 10346 · 275 g/m2",
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Galvanizing | Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2"
+          },
+          "offer_evidence": {
+            "page": 1,
+            "excerpt": "Pre-galvanized strip, EN 10346, coating class Z275, coating mass 275 g/m2 total (both surfaces)"
+          },
+          "checks": [
+            {
+              "label": "Coating process",
+              "outcome": "fail",
+              "spec_text": "hot-dip galvanized",
+              "offer_text": "pre-galvanized (zinc-coated strip)",
+              "note": "The offered coating process is a different process."
+            },
+            {
+              "label": "Coating standard",
+              "outcome": "fail",
+              "spec_text": "EN ISO 1461",
+              "offer_text": "EN 10346",
+              "note": "EN ISO 1461 is not the same standard as EN 10346."
+            },
+            {
+              "label": "Coating mass",
+              "outcome": "fail",
+              "spec_text": "≥ 505 g/m²",
+              "offer_text": "275 g/m²",
+              "note": "Offered coating mass is below the specified minimum."
+            }
+          ],
+          "rule_explanation": "Conflicting coating evidence: coating process (hot-dip galvanized vs pre-galvanized (zinc-coated strip)); coating standard (EN ISO 1461 vs EN 10346); coating mass (≥ 505 g/m² vs 275 g/m²).",
+          "ai_explanation": "The offer conflicts with the specification on all three attributes: pre-galvanized (zinc-coated strip) instead of hot-dip galvanized, EN 10346 instead of EN ISO 1461, and 275 g/m2 instead of the required minimum of 505 g/m2.",
+          "explanation_source": "ai"
+        },
+        {
+          "criterion": "standard",
+          "status": "unverified",
+          "headline": "No applicable standard found in the catalogue",
+          "spec_display": "EN 10219",
+          "offer_display": null,
+          "spec_evidence": {
+            "page": 1,
+            "excerpt": "Applicable standard | EN 10219"
+          },
+          "offer_evidence": null,
+          "checks": [],
+          "rule_explanation": "The catalogue does not state a standard designation that could be matched. Missing information is never treated as compliant.",
+          "ai_explanation": "The catalogue does not state a standard designation, so compliance with EN 10219 is unverified and is not treated as compliant.",
+          "explanation_source": "ai"
+        }
+      ],
+      "counts": {
+        "compliant": 1,
+        "non_compliant": 3,
+        "unverified": 1,
+        "not_specified": 0
+      },
+      "warnings": []
+    }
+  ],
+  "summary": "Marmara Çelik is compliant on all five criteria, with dimensions, wall thickness, material grade, galvanizing and standard all matching or exceeding the specification. Karadeniz Boru is non-compliant on wall thickness, material grade and galvanizing, and its standard designation is unverified because the catalogue does not state one.",
+  "summary_source": "ai",
+  "model": "deepseek-ai/deepseek-v4.1-flash-1017",
+  "parser_notes": [
+    "Specification parsed with Docling (1 page(s)).",
+    "Manufacturer 1 parsed with Docling (1 page(s)).",
+    "Manufacturer 2 parsed with Docling (1 page(s))."
+  ],
+  "validation_issues": [],
+  "duration_seconds": 58.8,
+  "demo": true
+}

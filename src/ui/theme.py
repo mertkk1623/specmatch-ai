@@ -210,6 +210,27 @@ p.sm-small { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin: 0
 .sm-docrow .nm { font-weight: 500; }
 .sm-docrow .meta { font-size: 11.5px; color: var(--muted); }
 
+/* ---------- Quick start ---------- */
+.sm-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 0 0 20px; }
+@media (max-width: 1080px) { .sm-quick { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .sm-quick { grid-template-columns: 1fr; } }
+.sm-quick .sm-card { padding: 16px 16px 14px; }
+.sm-quick .tag {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted);
+  background: var(--surface-tint); border-radius: 4px; padding: 2px 7px; margin-bottom: 9px;
+}
+.sm-quick .tag.ok { color: var(--ok); background: var(--ok-soft); }
+.sm-quick .tag.bad { color: var(--bad); background: var(--bad-soft); }
+.sm-quick h4 { font-size: 13.5px; font-weight: 650; margin: 0 0 5px; letter-spacing: -.005em; }
+.sm-quick p { font-size: 12.4px; line-height: 1.55; color: var(--muted); margin: 0; }
+.sm-quick .res {
+  margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--line);
+  font-size: 11.5px; font-weight: 600; color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.sm-quick .res.ok { color: var(--ok); }
+.sm-quick .res.bad { color: var(--bad); }
+
 /* ---------- Streamlit widget polish ---------- */
 .stButton > button {
   border-radius: 6px; font-weight: 600; font-size: 14px; padding: .55rem 1.15rem;
