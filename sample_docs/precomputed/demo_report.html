@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpecMatch AI comparison report — demo_specification.pdf</title>
+<style>
+  :root {
+    --ink:#1B2430; --muted:#5C6875; --line:#DCE2E8; --soft:#F6F8FA;
+    --ok:#1E6B45; --ok-bg:#E9F5EE; --bad:#A02929; --bad-bg:#FBEBEB;
+    --warn:#8A5A00; --warn-bg:#FFF5E3; --muted-bg:#EEF1F4;
+    --accent:#1F4E79;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; padding:40px 32px 64px; background:#fff; color:var(--ink);
+    font:14px/1.55 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .sheet { max-width:1120px; margin:0 auto; }
+  header.top { border-bottom:2px solid var(--ink); padding-bottom:16px; margin-bottom:8px; }
+  .eyebrow { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  h1 { font-size:24px; margin:8px 0 6px; letter-spacing:-.01em; }
+  .meta { display:flex; flex-wrap:wrap; gap:6px 22px; font-size:12px; color:var(--muted); }
+  .demo-note {
+    margin:18px 0 0; padding:10px 14px; border-left:3px solid var(--warn);
+    background:var(--warn-bg); color:#6C4A00; font-size:12.5px;
+  }
+  .summary { display:grid; grid-template-columns:1fr 300px; gap:24px; margin:24px 0 8px; }
+  .summary p { margin:0; font-size:14.5px; }
+  .summary .src { margin-top:8px; font-size:11.5px; color:var(--muted); }
+  .totals { border:1px solid var(--line); border-radius:6px; overflow:hidden; font-size:12.5px; }
+  .totals div { display:flex; justify-content:space-between; padding:7px 12px; border-bottom:1px solid var(--line); }
+  .totals div:last-child { border-bottom:0; }
+  .totals b { font-variant-numeric:tabular-nums; }
+  h2 { font-size:15px; margin:0; letter-spacing:-.005em; }
+  section.manufacturer { margin-top:34px; page-break-inside:avoid; }
+  .mfr-head { display:flex; justify-content:space-between; align-items:flex-end; gap:16px; padding-bottom:9px; border-bottom:1px solid var(--ink); }
+  .mfr-head .doc { margin:3px 0 0; font-size:12px; color:var(--muted); }
+  .tally { display:flex; gap:12px; font-size:12px; white-space:nowrap; }
+  .tally-ok { color:var(--ok); font-weight:600; }
+  .tally-bad { color:var(--bad); font-weight:600; }
+  .tally-warn { color:var(--warn); font-weight:600; }
+  table.grid { width:100%; border-collapse:collapse; margin-top:10px; table-layout:fixed; }
+  table.grid th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--muted); font-weight:600; padding:7px 10px; border-bottom:1px solid var(--line); }
+  table.grid td { padding:12px 10px; border-bottom:1px solid var(--line); vertical-align:top; font-size:12.6px; }
+  .crit-title { font-weight:600; }
+  .crit-headline { color:var(--muted); font-size:12px; margin-top:3px; }
+  .vals .k { display:inline-block; min-width:34px; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.07em; color:var(--muted); }
+  .vals div + div { margin-top:6px; }
+  .evidence { margin:4px 0 0 34px; font-size:11.5px; color:var(--muted); }
+  .evidence .page { font-weight:600; margin-right:6px; color:var(--accent); }
+  .evidence q { font-style:italic; }
+  .badge { display:inline-block; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:600; white-space:nowrap; }
+  .badge-ok { background:var(--ok-bg); color:var(--ok); }
+  .badge-bad { background:var(--bad-bg); color:var(--bad); }
+  .badge-warn { background:var(--warn-bg); color:var(--warn); }
+  .badge-muted { background:var(--muted-bg); color:var(--muted); }
+  .expl p { margin:0 0 6px; }
+  ul.checks { margin:6px 0 0; padding-left:0; list-style:none; font-size:11.7px; color:var(--muted); }
+  ul.checks li { padding:4px 0; border-top:1px dotted var(--line); }
+  .chk-label { color:var(--ink); font-weight:600; margin-right:6px; }
+  .chk-tone { font-size:10px; text-transform:uppercase; letter-spacing:.06em; margin-right:6px; }
+  .chk-pass { color:var(--ok); }
+  .chk-fail { color:var(--bad); }
+  .chk-unknown { color:var(--warn); }
+  .chk-values { color:var(--muted); }
+  .chk-note { display:block; margin-top:2px; font-style:italic; }
+  .src { margin-top:6px; font-size:10.5px; color:#8593a1; }
+  section.notes { margin-top:34px; page-break-inside:avoid; }
+  section.notes ul { margin:10px 0 0; padding-left:18px; font-size:12.4px; color:var(--muted); }
+  section.spec { margin-top:34px; page-break-inside:avoid; }
+  table.plain { width:100%; border-collapse:collapse; margin-top:10px; font-size:12.4px; }
+  table.plain th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--muted); padding:6px 10px; border-bottom:1px solid var(--line); }
+  table.plain td { padding:7px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted); }
+  @media print {
+    body { padding:0; font-size:11.5px; }
+    section.manufacturer, section.notes, section.spec { break-inside:avoid; }
+    .demo-note { border-left-color:#8A5A00; }
+  }
+  @media (max-width:860px) {
+    body { padding:24px 16px 48px; }
+    .summary { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="top">
+    <div class="eyebrow">SpecMatch AI · Technical specification comparison</div>
+    <h1>Compliance comparison report</h1>
+    <div class="meta">
+      <span><strong>Specification:</strong> demo_specification.pdf</span>
+      <span><strong>Generated:</strong> 14 Nov 2026, 02:02 UTC</span>
+      <span><strong>Analysis ID:</strong> 154eda012652</span>
+      <span><strong>Model:</strong> deepseek-ai/deepseek-v4.1-flash-1017</span>
+      <span><strong>Documents compared:</strong> 2</span>
+    </div>
+  </header>
+  <p class="demo-note">Demonstration analysis. The input documents are synthetic sample files created for this portfolio project.</p>
+
+  <div class="summary">
+    <div>
+      <p>Anadolu Profil meets all five criteria, with dimensions, wall thickness, grade, galvanizing and standard all matching the specification. Ege Metal is non-compliant on wall thickness, material grade and galvanizing, and its standard designation is unverified because the catalogue states none.</p>
+      <div class="src">Summary source: AI narrative, statuses fixed by deterministic rules</div>
+    </div>
+    <div class="totals">
+      <div><span>Compliant</span><b>6</b></div>
+      <div><span>Non-compliant</span><b>3</b></div>
+      <div><span>Unverified</span><b>1</b></div>
+      <div><span>Not specified in project spec</span><b>0</b></div>
+    </div>
+  </div>
+
+  
+    <section class="manufacturer">
+      <header class="mfr-head">
+        <div>
+          <h2>Anadolu Profil</h2>
+          <p class="doc">demo_manufacturer_a.pdf · 1 page(s) · parsed with Docling</p>
+        </div>
+        <div class="tally">
+          <span class="tally-ok">5 compliant</span>
+          <span class="tally-bad">0 non-compliant</span>
+          <span class="tally-warn">0 unverified</span>
+        </div>
+      </header>
+      <table class="grid">
+        <thead>
+          <tr>
+            <th style="width:20%">Criterion</th>
+            <th style="width:11%">Status</th>
+            <th style="width:30%">Values</th>
+            <th style="width:39%">Explanation and checks</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Profile dimensions</div>
+        <div class="crit-headline">Offered section matches the specified profile</div>
+      </td>
+      <td><span class="badge badge-ok">Compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> 40 × 40 mm<div class="evidence"><span class="page">p. 1</span><q>Section profile | Square hollow section, 40 x 40 mm</q></div></div>
+        <div><span class="k">Offer</span> 40 × 40 mm<div class="evidence"><span class="page">p. 1</span><q>Outside dimensions | 40 mm x 40 mm</q></div></div>
+      </td>
+      <td class="expl">
+        <p>Width and height both match the specified 40 × 40 mm within the 0.1 mm rounding tolerance used in V1, so the criterion is compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Width</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">40 mm → 40 mm</span></li><li><span class="chk-label">Height</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">40 mm → 40 mm</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Wall thickness</div>
+        <div class="crit-headline">Offered wall thickness meets the requirement</div>
+      </td>
+      <td><span class="badge badge-ok">Compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> 3 mm (nominal)<div class="evidence"><span class="page">p. 1</span><q>Wall thickness | 3.0 mm nominal</q></div></div>
+        <div><span class="k">Offer</span> 3 mm (nominal)<div class="evidence"><span class="page">p. 1</span><q>Wall thickness | 3.0 mm nominal</q></div></div>
+      </td>
+      <td class="expl">
+        <p>The catalogue states the same nominal wall thickness of 3 mm as the specification, so the criterion is compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Wall thickness</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">3 mm (nominal) → 3 mm (nominal)</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Material grade</div>
+        <div class="crit-headline">Material grade matches the specification</div>
+      </td>
+      <td><span class="badge badge-ok">Compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> S235JRH<div class="evidence"><span class="page">p. 1</span><q>Steel grade | S235JRH</q></div></div>
+        <div><span class="k">Offer</span> S235JRH<div class="evidence"><span class="page">p. 1</span><q>Steel grade | S235JRH</q></div></div>
+      </td>
+      <td class="expl">
+        <p>Both documents state grade S235JRH, with spacing and punctuation ignored when comparing designations, so the criterion is compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Grade designation</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">S235JRH → S235JRH</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Galvanizing / coating</div>
+        <div class="crit-headline">Offered coating meets the stated requirement</div>
+      </td>
+      <td><span class="badge badge-ok">Compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2<div class="evidence"><span class="page">p. 1</span><q>Galvanizing | Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2</q></div></div>
+        <div><span class="k">Offer</span> Hot-dip galvanized after fabrication, EN ISO 1461<div class="evidence"><span class="page">p. 1</span><q>Surface finish | Hot-dip galvanized after fabrication, EN ISO 1461</q></div></div>
+      </td>
+      <td class="expl">
+        <p>The coating process (hot-dip galvanized), the standard (EN ISO 1461) and the coating mass (620 g/m² against a minimum of 505 g/m²) all match, so the criterion is compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Coating process</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">hot-dip galvanized → hot-dip galvanized</span></li><li><span class="chk-label">Coating standard</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">EN ISO 1461 → EN ISO 1461</span></li><li><span class="chk-label">Coating mass</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">≥ 505 g/m² → 620 g/m²</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Applicable standard</div>
+        <div class="crit-headline">Catalogue references the required standard</div>
+      </td>
+      <td><span class="badge badge-ok">Compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> EN 10219<div class="evidence"><span class="page">p. 1</span><q>Applicable standard | EN 10219 (cold formed welded structural hollow sections)</q></div></div>
+        <div><span class="k">Offer</span> EN 10219-1<div class="evidence"><span class="page">p. 1</span><q>Manufacturing standard | EN 10219-1</q></div></div>
+      </td>
+      <td class="expl">
+        <p>The catalogue references EN 10219-1, which is the same standard family and number as the specified EN 10219, so the criterion is compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Standard designation</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">EN 10219 → EN 10219-1</span><span class="chk-note">Part-level reference is consistent.</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    </tbody>
+      </table>
+    </section>
+    
+    <section class="manufacturer">
+      <header class="mfr-head">
+        <div>
+          <h2>Ege Metal</h2>
+          <p class="doc">demo_manufacturer_b.pdf · 1 page(s) · parsed with Docling</p>
+        </div>
+        <div class="tally">
+          <span class="tally-ok">1 compliant</span>
+          <span class="tally-bad">3 non-compliant</span>
+          <span class="tally-warn">1 unverified</span>
+        </div>
+      </header>
+      <table class="grid">
+        <thead>
+          <tr>
+            <th style="width:20%">Criterion</th>
+            <th style="width:11%">Status</th>
+            <th style="width:30%">Values</th>
+            <th style="width:39%">Explanation and checks</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Profile dimensions</div>
+        <div class="crit-headline">Offered section matches the specified profile</div>
+      </td>
+      <td><span class="badge badge-ok">Compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> 40 × 40 mm<div class="evidence"><span class="page">p. 1</span><q>Section profile | Square hollow section, 40 x 40 mm</q></div></div>
+        <div><span class="k">Offer</span> 40 × 40 mm<div class="evidence"><span class="page">p. 1</span><q>Outside dimensions | 40 mm x 40 mm</q></div></div>
+      </td>
+      <td class="expl">
+        <p>Width and height both match the specified 40 × 40 mm within the 0.1 mm rounding tolerance used in V1, so the criterion is compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Width</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">40 mm → 40 mm</span></li><li><span class="chk-label">Height</span><span class="chk-tone chk-pass">Pass</span><span class="chk-values">40 mm → 40 mm</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Wall thickness</div>
+        <div class="crit-headline">Offered wall thickness conflicts with the requirement</div>
+      </td>
+      <td><span class="badge badge-bad">Non-compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> 3 mm (nominal)<div class="evidence"><span class="page">p. 1</span><q>Wall thickness | 3.0 mm nominal</q></div></div>
+        <div><span class="k">Offer</span> 2.5 mm (nominal)<div class="evidence"><span class="page">p. 1</span><q>Wall thickness | 2.5 mm nominal</q></div></div>
+      </td>
+      <td class="expl">
+        <p>The catalogue states a nominal wall thickness of 2.5 mm against the specified 3 mm, a difference of 0.5 mm, so the criterion is non-compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Wall thickness</span><span class="chk-tone chk-fail">Conflict</span><span class="chk-values">3 mm (nominal) → 2.5 mm (nominal)</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Material grade</div>
+        <div class="crit-headline">Offered material grade differs from the specification</div>
+      </td>
+      <td><span class="badge badge-bad">Non-compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> S235JRH<div class="evidence"><span class="page">p. 1</span><q>Steel grade | S235JRH</q></div></div>
+        <div><span class="k">Offer</span> S275J0H<div class="evidence"><span class="page">p. 1</span><q>Steel grade | S275J0H</q></div></div>
+      </td>
+      <td class="expl">
+        <p>The specification requires S235JRH but the catalogue offers S275J0H, a different designation, so the criterion is non-compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Grade designation</span><span class="chk-tone chk-fail">Conflict</span><span class="chk-values">S235JRH → S275J0H</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Galvanizing / coating</div>
+        <div class="crit-headline">Offered coating conflicts with the requirement</div>
+      </td>
+      <td><span class="badge badge-bad">Non-compliant</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2<div class="evidence"><span class="page">p. 1</span><q>Galvanizing | Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2</q></div></div>
+        <div><span class="k">Offer</span> pre-galvanized (zinc-coated strip) · EN 10346 · 275 g/m2<div class="evidence"><span class="page">p. 1</span><q>Surface finish | Pre-galvanized strip, EN 10346, coating class Z275 Coating mass | 275 g/m2 total (both surfaces)</q></div></div>
+      </td>
+      <td class="expl">
+        <p>The offered coating is pre-galvanized (zinc-coated strip) to EN 10346 at 275 g/m², which differs from the specified hot-dip galvanized process to EN ISO 1461 with a minimum of 505 g/m², so the criterion is non-compliant.</p>
+        <ul class="checks"><li><span class="chk-label">Coating process</span><span class="chk-tone chk-fail">Conflict</span><span class="chk-values">hot-dip galvanized → pre-galvanized (zinc-coated strip)</span><span class="chk-note">The offered coating process is a different process.</span></li><li><span class="chk-label">Coating standard</span><span class="chk-tone chk-fail">Conflict</span><span class="chk-values">EN ISO 1461 → EN 10346</span><span class="chk-note">EN ISO 1461 is not the same standard as EN 10346.</span></li><li><span class="chk-label">Coating mass</span><span class="chk-tone chk-fail">Conflict</span><span class="chk-values">≥ 505 g/m² → 275 g/m²</span><span class="chk-note">Offered coating mass is below the specified minimum.</span></li></ul>
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="crit">
+        <div class="crit-title">Applicable standard</div>
+        <div class="crit-headline">No applicable standard found in the catalogue</div>
+      </td>
+      <td><span class="badge badge-warn">Unverified</span></td>
+      <td class="vals">
+        <div><span class="k">Spec</span> EN 10219<div class="evidence"><span class="page">p. 1</span><q>Applicable standard | EN 10219 (cold formed welded structural hollow sections)</q></div></div>
+        <div><span class="k">Offer</span> —</div>
+      </td>
+      <td class="expl">
+        <p>The catalogue does not state a standard designation that could be matched, so compliance with EN 10219 is unverified and is not treated as compliant.</p>
+        
+        <div class="src">Explanation: AI</div>
+      </td>
+    </tr>
+    </tbody>
+      </table>
+    </section>
+    
+
+  <section class="spec">
+    <h2>Specification requirements and evidence</h2>
+    <table class="plain">
+      <thead><tr><th style="width:34%">Criterion</th><th style="width:10%">Page</th><th>Extracted evidence</th></tr></thead>
+      <tbody><tr><td>Profile dimensions</td><td>1</td><td>Section profile | Square hollow section, 40 x 40 mm</td></tr><tr><td>Wall thickness</td><td>1</td><td>Wall thickness | 3.0 mm nominal</td></tr><tr><td>Material grade</td><td>1</td><td>Steel grade | S235JRH</td></tr><tr><td>Galvanizing / coating</td><td>1</td><td>Galvanizing | Hot-dip galvanized to EN ISO 1461, minimum coating mass 505 g/m2</td></tr><tr><td>Applicable standard</td><td>1</td><td>Applicable standard | EN 10219 (cold formed welded structural hollow sections)</td></tr></tbody>
+    </table>
+  </section>
+
+  
+
+  <footer>
+    SpecMatch AI is a first-pass comparison assistant. This report is not an engineering approval,
+    a certification, or a purchasing decision. Verify all values against the original documents before use.
+    Statuses are decided by deterministic rules; the AI extracts fields and writes explanations only.
+  </footer>
+</div>
+</body>
+</html>
